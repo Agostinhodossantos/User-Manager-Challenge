@@ -60,6 +60,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, UserProfileActivity.class);
                 intent.putExtra("user", (User)userList.get(position));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });

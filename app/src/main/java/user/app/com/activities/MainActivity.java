@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
     private List<User> getUsers() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User("a", "a", "a", "a"));
-        userList.add(new User("a", "a", "a", "a"));
-        userList.add(new User("a", "a", "a", "a"));
-        userList.add(new User("a", "a", "a", "a"));
+        userList.add(new User("a", "a", "", "a"));
+        userList.add(new User("a", "a", "", "a"));
+        userList.add(new User("a", "a", "", "a"));
+        userList.add(new User("a", "a", "", "a"));
         return userList;
     }
 
