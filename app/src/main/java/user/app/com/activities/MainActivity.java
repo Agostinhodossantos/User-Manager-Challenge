@@ -12,12 +12,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import user.app.com.R;
+import user.app.com.adapters.UserListAdapter;
 import user.app.com.databinding.ActivityMainBinding;
+import user.app.com.models.User;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+        setupUsersRv();
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +47,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setupUsersRv() {
+        UserListAdapter adapter = new UserListAdapter(getApplicationContext(), getUsers());
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
+        binding.rvUsers.setLayoutManager(layoutManager);
+        binding.rvUsers.setAdapter(adapter);
+    }
+
+    private List<User> getUsers() {
+        List<User> userList = new ArrayList<>();
+        userList.add(new User("a", "a", "a", "a"));
+        userList.add(new User("a", "a", "a", "a"));
+        userList.add(new User("a", "a", "a", "a"));
+        userList.add(new User("a", "a", "a", "a"));
+        return userList;
     }
 
     @Override
@@ -49,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

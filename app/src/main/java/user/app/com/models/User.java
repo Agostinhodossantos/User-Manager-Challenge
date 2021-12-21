@@ -1,6 +1,8 @@
 package user.app.com.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id, name, imgUrl, biography;
 
     public User(String id, String name, String imgUrl, String biography) {
