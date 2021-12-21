@@ -1,17 +1,11 @@
-package user.app.com.activities;
+package user.app.com.ui.activities;
 
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -22,12 +16,11 @@ import user.app.com.models.User;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding binding;
 

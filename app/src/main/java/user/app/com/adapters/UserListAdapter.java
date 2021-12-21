@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import user.app.com.R;
-import user.app.com.activities.UserProfileActivity;
+import user.app.com.ui.activities.UserProfileActivity;
 import user.app.com.models.User;
 import user.app.com.utils.StringUtils;
 

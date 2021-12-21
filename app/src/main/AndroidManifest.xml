@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UserManager">
         <activity
-            android:name=".activities.UserProfileActivity"
+            android:name=".ui.activities.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.UserManager.NoActionBar">
