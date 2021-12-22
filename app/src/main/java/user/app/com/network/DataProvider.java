@@ -37,7 +37,7 @@ public class DataProvider {
                 .child(user.getId())
                 .setValue(user)
                 .addOnSuccessListener(unused ->
-                        responseListener.onSuccess("User created"))
+                        responseListener.onSuccess("User created successfully"))
                 .addOnFailureListener(e ->
                         responseListener.onFailure(e.getMessage()));
     }

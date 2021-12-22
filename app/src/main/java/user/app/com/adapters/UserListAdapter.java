@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import user.app.com.R;
+import user.app.com.network.DataProvider;
 import user.app.com.ui.activities.UserProfileActivity;
 import user.app.com.models.User;
 import user.app.com.utils.StringUtils;
@@ -54,7 +55,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
         if (!StringUtils.isEmpty(imgUrl)) {
             Picasso.get().load(imgUrl).into(holder.img_profile);
         } else {
-            // TODO: 12/21/21 show default avatar
+           holder.img_profile.setImageResource(R.drawable.emptyimg);
         }
 
         holder.item_card.setOnClickListener(new View.OnClickListener() {
@@ -70,9 +71,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
         holder.img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext,
-                        ""+userList.get(position),
-                        Toast.LENGTH_SHORT).show();
+                DataProvider provider = new DataProvider();
+                provider.removeUser(userList.get(position).getId(), new DataProvider.ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        Toast.makeText(mContext, response.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

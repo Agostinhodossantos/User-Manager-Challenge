@@ -62,7 +62,7 @@
                 android:id="@+id/ed_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"/>
+                android:hint="@string/hint_name"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
-                android:hint="Biography"/>
+                android:hint="@string/hint_bio"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar

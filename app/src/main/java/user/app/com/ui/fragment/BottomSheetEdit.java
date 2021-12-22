@@ -30,7 +30,7 @@ public class BottomSheetEdit extends BottomSheetDialogFragment  {
     private String text;
     private int type;
 
-    public BottomSheetEdit(String name, int type) {
+    public BottomSheetEdit(String text, int type) {
         this.text = text;
         this.type = type;
     }
@@ -44,11 +44,12 @@ public class BottomSheetEdit extends BottomSheetDialogFragment  {
 
         ed_text.setText(text);
         if (type == Constants.NAME) {
-            tv_title.setText("Type name");
-            ed_text.setHint("Name here");
+            tv_title.setText(R.string.enter_name);
+            ed_text.setHint(R.string.hint_name);
+
         } else {
-            tv_title.setText("Type Bio");
-            ed_text.setHint("Bio here");
+            tv_title.setText(R.string.enter_bio);
+            ed_text.setHint(R.string.hint_bio);
         }
 
         btn_save.setOnClickListener(new View.OnClickListener() {

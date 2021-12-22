@@ -23,6 +23,7 @@ import java.io.IOException;
 import user.app.com.R;
 import user.app.com.databinding.ActivityUserProfileBinding;
 import user.app.com.models.User;
+import user.app.com.network.DataProvider;
 import user.app.com.ui.fragment.BottomSheetEdit;
 import user.app.com.utils.Constants;
 import user.app.com.utils.StringUtils;
@@ -55,7 +56,7 @@ public class UserProfileActivity extends AppCompatActivity
         binding.tvBio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetEdit bottomSheetEditBio = new BottomSheetEdit(user.getName(), Constants.BIO);
+                BottomSheetEdit bottomSheetEditBio = new BottomSheetEdit(user.getBiography(), Constants.BIO);
                 bottomSheetEditBio.show(getSupportFragmentManager() , "bottomSheet");
             }
         });
@@ -150,11 +151,73 @@ public class UserProfileActivity extends AppCompatActivity
     }
 
     private void uploadImage() {
-        Toast.makeText(UserProfileActivity.this, ""+mSelectedUri.toString(), Toast.LENGTH_SHORT).show();
+        DataProvider provider = new DataProvider();
+        provider.fileUpload(mSelectedUri, new DataProvider.ResponseListener() {
+            @Override
+            public void onSuccess(Object response) {
+                updateImage(response.toString());
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
+
+    private void updateImage(String url) {
+        DataProvider provider = new DataProvider();
+        provider.updateUserImg(user.getId(), url, new DataProvider.ResponseListener() {
+            @Override
+            public void onSuccess(Object response) {
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
     }
 
     @Override
     public void onSaveButtonClicked(String text, int type) {
-        Toast.makeText(getApplicationContext(), text+" - "+type, Toast.LENGTH_SHORT).show();
+        DataProvider provider = new DataProvider();
+
+        if (type == Constants.NAME) {
+            provider.updateUserName(user.getId(), text, new DataProvider.ResponseListener() {
+                @Override
+                public void onSuccess(Object response) {
+                    Toast.makeText(UserProfileActivity.this,
+                            response.toString(),
+                            Toast.LENGTH_SHORT).show();
+                    binding.tvName.setText(text);
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    Toast.makeText(UserProfileActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (type == Constants.BIO) {
+            provider.updateUserBio(user.getId(), text, new DataProvider.ResponseListener() {
+                @Override
+                public void onSuccess(Object response) {
+                    Toast.makeText(UserProfileActivity.this,
+                            response.toString(),
+                            Toast.LENGTH_SHORT).show();
+                    binding.tvBio.setText(text);
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    Toast.makeText(UserProfileActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

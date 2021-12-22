@@ -18,6 +18,7 @@ import user.app.com.network.DataProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +56,12 @@ public class MainActivity extends AppCompatActivity  {
                         new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
                 binding.rvUsers.setLayoutManager(layoutManager);
                 binding.rvUsers.setAdapter(adapter);
+                binding.progressCircular.setVisibility(View.GONE); // hide progressBar
             }
 
             @Override
             public void onFailure(String message) {
-
+                binding.progressCircular.setVisibility(View.GONE);
             }
         });
 
@@ -78,6 +80,19 @@ public class MainActivity extends AppCompatActivity  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            DataProvider provider = new DataProvider();
+            provider.removeAll(new DataProvider.ResponseListener() {
+                @Override
+                public void onSuccess(Object response) {
+                    Toast.makeText(MainActivity.this, response.toString(),
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(String message) {
+
+                }
+            });
             return true;
         }
 
