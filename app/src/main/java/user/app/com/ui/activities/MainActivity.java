@@ -14,6 +14,7 @@ import user.app.com.R;
 import user.app.com.adapters.UserListAdapter;
 import user.app.com.databinding.ActivityMainBinding;
 import user.app.com.models.User;
+import user.app.com.network.DataProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,19 +46,23 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void setupUsersRv() {
-        UserListAdapter adapter = new UserListAdapter(getApplicationContext(), getUsers());
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
-        binding.rvUsers.setLayoutManager(layoutManager);
-        binding.rvUsers.setAdapter(adapter);
-    }
+        DataProvider provider = new DataProvider();
+        provider.getAllUsers(new DataProvider.ResponseListener() {
+            @Override
+            public void onSuccess(Object response) {
+                UserListAdapter adapter = new UserListAdapter(getApplicationContext(), (List<User>) response);
+                StaggeredGridLayoutManager layoutManager =
+                        new StaggeredGridLayoutManager(1, LinearLayoutManager.VERTICAL);
+                binding.rvUsers.setLayoutManager(layoutManager);
+                binding.rvUsers.setAdapter(adapter);
+            }
 
-    private List<User> getUsers() {
-        List<User> userList = new ArrayList<>();
-        userList.add(new User("a", "Agostinho", "", "my bio"));
-        userList.add(new User("a", "Santos", "", "a"));
-        userList.add(new User("a", "Mario", "", "a"));
-        userList.add(new User("a", "Helio", "", "a"));
-        return userList;
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+
     }
 
     @Override

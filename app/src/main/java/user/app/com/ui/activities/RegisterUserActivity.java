@@ -17,10 +17,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import user.app.com.R;
 import user.app.com.databinding.ActivityMainBinding;
 import user.app.com.databinding.ActivityRegisterUserBinding;
+import user.app.com.models.User;
+import user.app.com.network.DataProvider;
 import user.app.com.utils.StringUtils;
 
 public class RegisterUserActivity extends AppCompatActivity {
@@ -28,6 +31,7 @@ public class RegisterUserActivity extends AppCompatActivity {
     private ActivityRegisterUserBinding binding;
     private Uri mSelectedUri = null;
     private static final int PICK_FROM_GALLERY = 1;
+    DataProvider provider = new DataProvider();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,46 @@ public class RegisterUserActivity extends AppCompatActivity {
             binding.textInputBio.setErrorEnabled(false);
             binding.progressCircular.setVisibility(View.VISIBLE);
             binding.btnSave.setVisibility(View.GONE);
+
+            if (mSelectedUri != null) {
+                provider.fileUpload(mSelectedUri, new DataProvider.ResponseListener() {
+                    @Override
+                    public void onSuccess(Object response) {
+                        createUser(name, bio, response.toString());
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Toast.makeText(RegisterUserActivity.this,
+                                message, Toast.LENGTH_SHORT).show();
+                        createUser(name, bio,"" );
+                    }
+                });
+            } else {
+                createUser(name, bio,"" );
+            }
+
         }
+    }
+
+    private void createUser(String name, String bio, String imgUrl) {
+       User user = new User(UUID.randomUUID().toString(), name, imgUrl, bio);
+       provider.createUser(user, new DataProvider.ResponseListener() {
+           @Override
+           public void onSuccess(Object response) {
+               Toast.makeText(RegisterUserActivity.this, "User added successfully",
+                       Toast.LENGTH_SHORT).show();
+               finish();
+           }
+
+           @Override
+           public void onFailure(String message) {
+               Toast.makeText(RegisterUserActivity.this, "an error occurred:"+message,
+                       Toast.LENGTH_SHORT).show();
+               binding.progressCircular.setVisibility(View.GONE);
+               binding.btnSave.setVisibility(View.VISIBLE);
+           }
+       });
     }
 
     private void checkPermission() {
@@ -132,13 +175,10 @@ public class RegisterUserActivity extends AppCompatActivity {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mSelectedUri);
             binding.imgProfile.setImageDrawable(new BitmapDrawable(bitmap));
-            uploadImage();
         } catch (IOException e) {
 
         }
     }
 
-    private void uploadImage() {
-        Toast.makeText(RegisterUserActivity.this, ""+mSelectedUri.toString(), Toast.LENGTH_SHORT).show();
-    }
+
 }
