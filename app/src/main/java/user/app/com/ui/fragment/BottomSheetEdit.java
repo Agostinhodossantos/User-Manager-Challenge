@@ -23,7 +23,7 @@ import user.app.com.utils.StringUtils;
 
 public class BottomSheetEdit extends BottomSheetDialogFragment  {
     View view;
-   // private BottomSheetListener mListener;
+    private BottomSheetListener mListener;
     private TextView tv_title;
     private EditText ed_text;
     private MaterialButton btn_save , btn_cancel;
@@ -55,12 +55,12 @@ public class BottomSheetEdit extends BottomSheetDialogFragment  {
             @Override
             public void onClick(View view) {
 
-                String name  = ed_text.getText().toString().trim();
+                String text  = ed_text.getText().toString().trim();
 
-                if (StringUtils.isEmpty(name)){
+                if (StringUtils.isEmpty(text)){
                     ed_text.setHintTextColor(Color.RED);
                 }else {
-                    //mListener.onButtonClicked(name);
+                    mListener.onSaveButtonClicked(text, type);
                     dismiss();
                 }
 
@@ -87,20 +87,20 @@ public class BottomSheetEdit extends BottomSheetDialogFragment  {
         tv_title = view.findViewById(R.id.tv_title);
     }
 
-//
-//    public interface BottomSheetListener {
-//        void onButtonClicked(String name);
-//    }
-//
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//
-//        try {
-//            mListener = (BottomSheetListener) context;
-//        }catch (ClassCastException e){
-//            throw  new ClassCastException(context.toString() + " mus implement BottomSheetListener");
-//        }
-//
-//    }
+
+    public interface BottomSheetListener {
+        void onSaveButtonClicked(String text, int type);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            mListener = (BottomSheetListener) context;
+        }catch (ClassCastException e){
+            throw  new ClassCastException(context.toString() + " mus implement BottomSheetListener");
+        }
+
+    }
 }

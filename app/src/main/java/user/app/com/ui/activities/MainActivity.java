@@ -1,5 +1,6 @@
 package user.app.com.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity  {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(MainActivity.this, RegisterUserActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -51,10 +53,10 @@ public class MainActivity extends AppCompatActivity  {
 
     private List<User> getUsers() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User("a", "a", "", "a"));
-        userList.add(new User("a", "a", "", "a"));
-        userList.add(new User("a", "a", "", "a"));
-        userList.add(new User("a", "a", "", "a"));
+        userList.add(new User("a", "Agostinho", "", "my bio"));
+        userList.add(new User("a", "Santos", "", "a"));
+        userList.add(new User("a", "Mario", "", "a"));
+        userList.add(new User("a", "Helio", "", "a"));
         return userList;
     }
 

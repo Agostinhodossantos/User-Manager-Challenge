@@ -51,9 +51,9 @@
                                android:id="@+id/img_profile"
                                android:layout_width="match_parent"
                                android:layout_height="match_parent"
-                               app:riv_corner_radius="8dp"
                                android:scaleType="centerCrop"
-                               android:src="@drawable/person"/>
+                               android:src="@drawable/person"
+                               app:riv_corner_radius="8dp" />
 
                            <ImageView
                                android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                                android:layout_alignParentEnd="true"
                                android:padding="8dp"
                                android:background="@drawable/bg_circle"
-                               android:tint="@android:color/white"
+                               app:tint="@android:color/white"
                                android:layout_margin="5dp"
                                android:src="@drawable/ic_baseline_add_a_photo_24"/>
                        </RelativeLayout>

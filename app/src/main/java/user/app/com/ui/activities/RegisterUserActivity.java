@@ -16,47 +16,33 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 
 import user.app.com.R;
-import user.app.com.databinding.ActivityUserProfileBinding;
-import user.app.com.models.User;
-import user.app.com.ui.fragment.BottomSheetEdit;
-import user.app.com.utils.Constants;
+import user.app.com.databinding.ActivityMainBinding;
+import user.app.com.databinding.ActivityRegisterUserBinding;
 import user.app.com.utils.StringUtils;
 
-public class UserProfileActivity extends AppCompatActivity
-        implements BottomSheetEdit.BottomSheetListener {
+public class RegisterUserActivity extends AppCompatActivity {
 
-
-    private ActivityUserProfileBinding binding;
+    private ActivityRegisterUserBinding binding;
     private Uri mSelectedUri = null;
     private static final int PICK_FROM_GALLERY = 1;
-    private  User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
+        binding = ActivityRegisterUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getIntentValues();
 
-        binding.tvName.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetEdit bottomSheetEditName = new BottomSheetEdit(user.getName(), Constants.NAME);
-                bottomSheetEditName.show(getSupportFragmentManager() , "bottomSheet");
-            }
-        });
-
-        binding.tvBio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BottomSheetEdit bottomSheetEditBio = new BottomSheetEdit(user.getName(), Constants.BIO);
-                bottomSheetEditBio.show(getSupportFragmentManager() , "bottomSheet");
+                checkFields();
             }
         });
 
@@ -66,13 +52,34 @@ public class UserProfileActivity extends AppCompatActivity
                 checkPermission();
             }
         });
+
+    }
+
+    private void checkFields() {
+        String name = binding.edName.getText().toString();
+        String bio = binding.edBio.getText().toString();
+
+        if (StringUtils.isEmpty(name)) {
+            binding.edName.requestFocus();
+            binding.textInputName.setErrorEnabled(true);
+            binding.textInputName.setError("Name must not be empty");
+        } else if (StringUtils.isEmpty(bio)) {
+            binding.edBio.requestFocus();
+            binding.textInputBio.setErrorEnabled(true);
+            binding.textInputBio.setError("Bio must not be empty");
+        } else {
+            binding.textInputName.setErrorEnabled(false);
+            binding.textInputBio.setErrorEnabled(false);
+            binding.progressCircular.setVisibility(View.VISIBLE);
+            binding.btnSave.setVisibility(View.GONE);
+        }
     }
 
     private void checkPermission() {
         try {
-            if (ActivityCompat.checkSelfPermission(UserProfileActivity.this,
+            if (ActivityCompat.checkSelfPermission(RegisterUserActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(UserProfileActivity.this,
+                ActivityCompat.requestPermissions(RegisterUserActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         PICK_FROM_GALLERY);
@@ -90,24 +97,6 @@ public class UserProfileActivity extends AppCompatActivity
         startActivityForResult(intent, 0);
     }
 
-    private void getIntentValues() {
-        Bundle bundle = getIntent().getExtras();
-        user = (User) bundle.getSerializable("user");
-
-        if (user != null) {
-            updateUI(user);
-        }
-    }
-
-    private void updateUI(User user) {
-        binding.tvName.setText(user.getName());
-        binding.tvBio.setText(user.getBiography());
-
-        if (!StringUtils.isEmpty(user.getImgUrl())) {
-            Picasso.get().load(user.getImgUrl()).into(binding.imgProfile);
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -131,7 +120,7 @@ public class UserProfileActivity extends AppCompatActivity
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     selectPhoto();
                 } else {
-                    Toast.makeText(UserProfileActivity.this,
+                    Toast.makeText(RegisterUserActivity.this,
                             "didn`t allow the app to access gallery",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -150,11 +139,6 @@ public class UserProfileActivity extends AppCompatActivity
     }
 
     private void uploadImage() {
-        Toast.makeText(UserProfileActivity.this, ""+mSelectedUri.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSaveButtonClicked(String text, int type) {
-        Toast.makeText(getApplicationContext(), text+" - "+type, Toast.LENGTH_SHORT).show();
+        Toast.makeText(RegisterUserActivity.this, ""+mSelectedUri.toString(), Toast.LENGTH_SHORT).show();
     }
 }
