@@ -49,7 +49,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tv_name.setText(userList.get(position).getName());
-        holder.tv_bio.setText(StringUtils.slice(userList.get(position).getBiography(), 0, 30));
+        holder.tv_bio.setText(StringUtils.slice(userList.get(position).getBiography(), 0, 40));
         String imgUrl = userList.get(position).getImgUrl();
 
         if (!StringUtils.isEmpty(imgUrl)) {

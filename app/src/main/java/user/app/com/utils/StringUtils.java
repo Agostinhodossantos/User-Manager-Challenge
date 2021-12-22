@@ -11,7 +11,7 @@ public class StringUtils {
 
     public static String slice(String strValue, int start, int end) {
         if (!isEmpty(strValue) && strValue.length() >= end - 1) {
-            return strValue.substring(start, end)+"...";
+            return strValue.substring(start, end).trim()+"...";
         }  else {
             return strValue;
         }
